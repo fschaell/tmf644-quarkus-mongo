@@ -2,6 +2,7 @@ package com.telekom.sep.tmf644.api.impl;
 
 import com.telekom.sep.tmf644.mapper.PartyPrivacyProfileMapper;
 import com.telekom.sep.tmf644.repository.entity.PartyPrivacyProfileEntity;
+import org.bson.types.ObjectId;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import org.openapitools.api.PartyPrivacyProfileApi;
 import org.openapitools.model.PartyPrivacyProfile;
@@ -23,33 +24,32 @@ public class PartyPrivacyProfileApiImpl implements PartyPrivacyProfileApi {
 
 
         PartyPrivacyProfileEntity partyPrivacyProfileEntity = privacyProfileMapper.map(partyPrivacyProfile);
-
         partyPrivacyProfileEntity.persist();
-
-        PartyPrivacyProfile profile = privacyProfileMapper.map(partyPrivacyProfileEntity);
-        return Response.ok().entity("OK").build();
+        return Response.ok().build();
     }
 
     public Response deletePartyPrivacyProfile(@PathParam("id") String id) {
 
-        PartyPrivacyProfileEntity.findById(id);
-        return Response.ok().entity("magic!").build();
+        PartyPrivacyProfileEntity.findById(new ObjectId(id)).delete();
+
+        return Response.ok().build();
     }
 
     public Response listPartyPrivacyProfile(@QueryParam("fields") String fields, @QueryParam("offset") Integer offset, @QueryParam("limit") Integer limit) {
-        return Response.ok().entity("magic!").build();
+
+        return Response.ok().entity(privacyProfileMapper.map(PartyPrivacyProfileEntity.listAll())).build();
     }
 
     public Response patchPartyPrivacyProfile(@PathParam("id") String id,@Valid PartyPrivacyProfileUpdate partyPrivacyProfile) {
-        return Response.ok().entity("magic!").build();
+
+        PartyPrivacyProfileEntity entity = privacyProfileMapper.map(partyPrivacyProfile);
+        entity.id = new ObjectId(id);
+        entity.update();
+        return Response.ok().build();
     }
 
-    public Response retrievePartyPrivacyProfile(@PathParam("id") String id,@QueryParam("fields")    String fields) {
-
-        PartyPrivacyProfileEntity entity = PartyPrivacyProfileEntity.find("name","PrivacyStatement").firstResult();
-
-
-        PartyPrivacyProfile profile = privacyProfileMapper.map(PartyPrivacyProfileEntity.findById(id));
+    public Response retrievePartyPrivacyProfile(@PathParam("id") String id,@QueryParam("fields")  String fields) {
+        PartyPrivacyProfile profile = privacyProfileMapper.map((PartyPrivacyProfileEntity) PartyPrivacyProfileEntity.findById(new ObjectId(id)));
         return Response.ok().entity(profile).build();
     }
 

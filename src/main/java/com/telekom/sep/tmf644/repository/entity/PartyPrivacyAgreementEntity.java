@@ -1,6 +1,8 @@
 package com.telekom.sep.tmf644.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.quarkus.mongodb.panache.MongoEntity;
+import io.quarkus.mongodb.panache.PanacheMongoEntity;
 import org.openapitools.model.*;
 
 import javax.validation.Valid;
@@ -16,9 +18,9 @@ import java.util.Objects;
 /**
  * A specific type of agreement that formalizes the privacy profiles requested for a party
  **/
-public class PartyPrivacyAgreementEntity {
+@MongoEntity(collection="PartyPrivacyAgreement")
+public class PartyPrivacyAgreementEntity extends PanacheMongoEntity {
   
-  public String id;
   public String href;
   public String agreementType;
   public String description;
@@ -29,15 +31,16 @@ public class PartyPrivacyAgreementEntity {
   public String status;
   public String version;
   public List<AgreementAuthorizationEntity> agreementAuthorization = new ArrayList<AgreementAuthorizationEntity>();
-  public List<AgreementItem> agreementItem = new ArrayList<AgreementItem>();
+  public List<AgreementItemEntity> agreementItem = new ArrayList<AgreementItemEntity>();
   public TimePeriodEntity agreementPeriod;
-  public AgreementSpecificationRef agreementSpecification;
-  public List<AgreementRef> associatedAgreement = new ArrayList<AgreementRef>();
-  public List<Characteristic> characteristic = new ArrayList<Characteristic>();
-  public TimePeriod completionDate;
-  public List<RelatedParty> engagedPartyRole = new ArrayList<RelatedParty>();
-  public List<PartyPrivacyProfileRef> partyPrivacyProfile = new ArrayList<PartyPrivacyProfileRef>();
-  public List<PartyPrivacyProfileCharacteristic> partyPrivacyProfileCharacteristic = new ArrayList<PartyPrivacyProfileCharacteristic>();
+  public AgreementSpecificationRefEntity agreementSpecification;
+  //
+  public List<AgreementRefEntity> associatedAgreement = new ArrayList<AgreementRefEntity>();
+  public List<CharacteristicEntity> characteristic = new ArrayList<CharacteristicEntity>();
+  public TimePeriodEntity completionDate;
+  public List<RelatedPartyEntity> engagedPartyRole = new ArrayList<RelatedPartyEntity>();
+  public List<PartyPrivacyProfileRefEntity> partyPrivacyProfile = new ArrayList<PartyPrivacyProfileRefEntity>();
+  public List<PartyPrivacyProfileCharacteristicEntity> partyPrivacyProfileCharacteristic = new ArrayList<PartyPrivacyProfileCharacteristicEntity>();
   public String atBaseType;
   public URI atSchemaLocation;
   public String atType;

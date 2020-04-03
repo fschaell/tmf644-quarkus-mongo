@@ -17,9 +17,9 @@ import java.util.Objects;
  **/
 public class AgreementItemEntity {
   
-  public List<ProductRef> product = new ArrayList<ProductRef>();
-  public List<ProductOfferingRef> productOffering = new ArrayList<ProductOfferingRef>();
-  public List<AgreementTermOrCondition> termOrCondition = new ArrayList<AgreementTermOrCondition>();
+  public List<ProductRefEntity> product = new ArrayList<ProductRefEntity>();
+  public List<ProductOfferingRefEntity> productOffering = new ArrayList<ProductOfferingRefEntity>();
+  public List<AgreementTermOrConditionEntity> termOrCondition = new ArrayList<AgreementTermOrConditionEntity>();
   public String atBaseType;
   public URI atSchemaLocation;
   public String atType;

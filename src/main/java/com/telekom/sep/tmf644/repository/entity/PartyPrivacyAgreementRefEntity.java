@@ -1,6 +1,11 @@
 package com.telekom.sep.tmf644.repository.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
+import java.util.Objects;
 
 
 /**
@@ -8,10 +13,7 @@ import java.net.URI;
  **/
 public class PartyPrivacyAgreementRefEntity {
   
-  //external id
   public String id;
-
-  //rest endpoint - here the api gateway endpoint should be used
   public String href;
   public String name;
   public String atBaseType;
