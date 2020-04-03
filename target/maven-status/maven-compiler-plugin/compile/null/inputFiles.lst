@@ -1,8 +1,0 @@
-/Users/fschaell/IdeaProjects/tmf644_openapi/tmf644-quarkus/src/main/java/com/telekom/sep/tmf644/repository/entity/PartyPrivacyProfileEntity.java
-/Users/fschaell/IdeaProjects/tmf644_openapi/tmf644-quarkus/src/main/java/com/telekom/sep/tmf644/api/impl/PartyPrivacyProfileApiImpl.java
-/Users/fschaell/IdeaProjects/tmf644_openapi/tmf644-quarkus/src/main/java/com/telekom/sep/tmf644/repository/entity/RelatedPartyEntity.java
-/Users/fschaell/IdeaProjects/tmf644_openapi/tmf644-quarkus/src/main/java/com/telekom/sep/tmf644/mapper/PartyPrivacyProfileMapper.java
-/Users/fschaell/IdeaProjects/tmf644_openapi/tmf644-quarkus/src/main/java/com/telekom/sep/tmf644/RestApplication.java
-/Users/fschaell/IdeaProjects/tmf644_openapi/tmf644-quarkus/src/main/java/com/telekom/sep/tmf644/repository/entity/PartyPrivacyProfileCharacteristicEntity.java
-/Users/fschaell/IdeaProjects/tmf644_openapi/tmf644-quarkus/src/main/java/com/telekom/sep/tmf644/repository/entity/PartyPrivacyAgreementRefEntity.java
-/Users/fschaell/IdeaProjects/tmf644_openapi/tmf644-quarkus/src/main/java/com/telekom/sep/tmf644/repository/entity/PartyPrivacyProfileSpecificationRefEntity.java
