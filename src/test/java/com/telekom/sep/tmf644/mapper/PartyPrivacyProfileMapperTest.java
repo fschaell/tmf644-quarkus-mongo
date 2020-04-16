@@ -3,6 +3,7 @@ package com.telekom.sep.tmf644.mapper;
 import com.telekom.sep.tmf644.mapper.PartyPrivacyProfileMapper;
 import com.telekom.sep.tmf644.repository.entity.PartyPrivacyProfileEntity;
 
+import org.bson.types.ObjectId;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.openapitools.model.PartyPrivacyProfile;
@@ -19,13 +20,10 @@ public class PartyPrivacyProfileMapperTest {
         @Test
         public void givenSourceToDestination_whenMaps_thenCorrect() {
             PartyPrivacyProfile simpleSource = new PartyPrivacyProfile();
+            simpleSource.setId("5e957c10e3701d792517d437");
             simpleSource.setName("SourceName");
             simpleSource.setDescription("SourceDescription");
             simpleSource.setAgreedByParty(new RelatedParty(){
-                @Override
-                public RelatedParty id(String id) {
-                    return super.id("1234");
-                }
 
                 @Override
                 public RelatedParty href(String href) {
@@ -45,12 +43,11 @@ public class PartyPrivacyProfileMapperTest {
 
 
             PartyPrivacyProfileEntity destination = mapper.map(simpleSource);
-
             assertEquals(simpleSource.getName(), destination.name);
             assertEquals(simpleSource.getDescription(),
                     destination.description);
-            assertEquals(simpleSource.getAgreedByParty().getId(),
-                    destination.agreedByParty.id);
+            assertEquals(simpleSource.getAgreedByParty().getName(),
+                    destination.agreedByParty.name);
 
 
             //and return
@@ -58,6 +55,8 @@ public class PartyPrivacyProfileMapperTest {
             assertEquals(simpleSource.getName(), destination.name);
             assertEquals(simpleSource.getDescription(),
                     destination.description);
+            assertEquals(simpleSource.getId(),
+                    destination.id.toString());
 
         }
 

@@ -3,6 +3,7 @@ package com.telekom.sep.tmf644.repository.entity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.openapitools.model.*;
 
 import javax.validation.Valid;
@@ -30,19 +31,23 @@ public class PartyPrivacyAgreementEntity extends PanacheMongoEntity {
   public String statementOfIntent;
   public String status;
   public String version;
-  public List<AgreementAuthorizationEntity> agreementAuthorization = new ArrayList<AgreementAuthorizationEntity>();
-  public List<AgreementItemEntity> agreementItem = new ArrayList<AgreementItemEntity>();
-  public TimePeriodEntity agreementPeriod;
-  public AgreementSpecificationRefEntity agreementSpecification;
+  public List<AgreementAuthorization> agreementAuthorization = new ArrayList<AgreementAuthorization>();
+  public List<AgreementItem> agreementItem = new ArrayList<AgreementItem>();
+  public TimePeriod agreementPeriod;
+  public AgreementSpecificationRef agreementSpecification;
   //
-  public List<AgreementRefEntity> associatedAgreement = new ArrayList<AgreementRefEntity>();
-  public List<CharacteristicEntity> characteristic = new ArrayList<CharacteristicEntity>();
-  public TimePeriodEntity completionDate;
-  public List<RelatedPartyEntity> engagedPartyRole = new ArrayList<RelatedPartyEntity>();
-  public List<PartyPrivacyProfileRefEntity> partyPrivacyProfile = new ArrayList<PartyPrivacyProfileRefEntity>();
-  public List<PartyPrivacyProfileCharacteristicEntity> partyPrivacyProfileCharacteristic = new ArrayList<PartyPrivacyProfileCharacteristicEntity>();
+  public List<AgreementRef> associatedAgreement = new ArrayList<AgreementRef>();
+  public List<Characteristic> characteristic = new ArrayList<Characteristic>();
+  public TimePeriod completionDate;
+  public List<RelatedParty> engagedPartyRole = new ArrayList<RelatedParty>();
+  public List<PartyPrivacyProfileRef> partyPrivacyProfile = new ArrayList<PartyPrivacyProfileRef>();
+  public List<PartyPrivacyProfileCharacteristic> partyPrivacyProfileCharacteristic = new ArrayList<PartyPrivacyProfileCharacteristic>();
+
+  @BsonProperty("baseType")
   public String atBaseType;
+  @BsonProperty("schemaLocation")
   public URI atSchemaLocation;
+  @BsonProperty("type")
   public String atType;
 
   

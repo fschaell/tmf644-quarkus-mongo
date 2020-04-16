@@ -13,7 +13,10 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 import java.util.List;
 
 public class PartyPrivacyAgreementApiImpl implements PartyPrivacyAgreementApi {
@@ -21,7 +24,8 @@ public class PartyPrivacyAgreementApiImpl implements PartyPrivacyAgreementApi {
     @Inject
     private PartyPrivacyAgreementMapper privacyAgreementMapper;
 
-
+    @Context
+    private UriInfo urlInfo;
 
     @Override
     public Response createPartyPrivacyAgreement(@Valid PartyPrivacyAgreementCreate partyPrivacyAgreement) {
@@ -29,15 +33,24 @@ public class PartyPrivacyAgreementApiImpl implements PartyPrivacyAgreementApi {
         PartyPrivacyAgreementEntity entity = privacyAgreementMapper.map(partyPrivacyAgreement);
         entity.persist();
 
-        return Response.ok().build();
+        UriBuilder uriBuilder = urlInfo.getAbsolutePathBuilder();
+        uriBuilder.path(entity.id.toString());  // determine id of created PartyPrivacyProfile and append it to path
+        // not set in DB but in GET request too
+        entity.href = uriBuilder.build().toString();
+
+        return Response.created(uriBuilder.build()).entity(privacyAgreementMapper.map(entity)).build();
+
     }
 
     @Override
     public Response deletePartyPrivacyAgreement(@PathParam("id") String id) {
         PartyPrivacyAgreementEntity entity = PartyPrivacyAgreementEntity.findById(new ObjectId(id));
+        if (entity == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+
         entity.delete();
 
-        return Response.ok().build();
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 
     @Override
@@ -48,16 +61,31 @@ public class PartyPrivacyAgreementApiImpl implements PartyPrivacyAgreementApi {
 
     @Override
     public Response patchPartyPrivacyAgreement(@PathParam("id") String id, @Valid PartyPrivacyAgreementUpdate partyPrivacyAgreement) {
-        PartyPrivacyAgreementEntity entity = privacyAgreementMapper.map(partyPrivacyAgreement);
-        entity.id = new ObjectId(id);
-        entity.update();
-        return Response.ok().build();
+        PartyPrivacyAgreementEntity updateEntity = privacyAgreementMapper.map(partyPrivacyAgreement);
+        updateEntity.id = new ObjectId(id);
+        PartyPrivacyAgreementEntity entity = PartyPrivacyAgreementEntity.findById(updateEntity.id);
+        if (entity == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        updateEntity.update();
+        return Response.ok().entity(updateEntity).build();
     }
 
     @Override
     public Response retrievePartyPrivacyAgreement(@PathParam("id") String id, @QueryParam("fields") String fields) {
-         PartyPrivacyAgreement agreement = privacyAgreementMapper.map((PartyPrivacyAgreementEntity) PartyPrivacyAgreementEntity.findById(new ObjectId(id)));
+        PartyPrivacyAgreementEntity entity = PartyPrivacyAgreementEntity.findById(new ObjectId(id));
 
+        if (entity == null)
+            return Response.status(Response.Status.NOT_FOUND).build();
+
+        PartyPrivacyAgreement agreement = privacyAgreementMapper.map(entity);
+
+
+        UriBuilder uriBuilder = urlInfo.getAbsolutePathBuilder();
+
+
+        // not set in DB but in GET request too
+        agreement.setHref(uriBuilder.build().toString());
         return Response.ok().entity(agreement).build();
     }
 }

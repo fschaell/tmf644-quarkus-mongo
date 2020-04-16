@@ -2,6 +2,7 @@ package com.telekom.sep.tmf644.repository.entity;
 
 import io.quarkus.mongodb.panache.MongoEntity;
 import io.quarkus.mongodb.panache.PanacheMongoEntity;
+import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.openapitools.model.*;
 
 import java.net.URI;
@@ -16,20 +17,22 @@ import java.util.List;
 @MongoEntity(collection="PartyPrivacyProfileSpecification")
 public class PartyPrivacyProfileSpecificationEntity extends PanacheMongoEntity {
 
-  public String id;
   public String href;
   public String description;
   public Date lastUpdate;
   public String name;
   public String status;
   public String version;
-  public List<PartyPrivacyRoleSpecificationEntity> applicableRole = new ArrayList<PartyPrivacyRoleSpecificationEntity>();
+  public List<PartyPrivacyRoleSpecification> applicableRole = new ArrayList<PartyPrivacyRoleSpecification>();
   public List<PartyPrivacyProfileSpecificationCharacteristicEntity> partyPrivacyProfileSpecCharacteristic = new ArrayList<PartyPrivacyProfileSpecificationCharacteristicEntity>();
-  public List<ProductOfferingRefEntity> productOffering = new ArrayList<ProductOfferingRefEntity>();
-  public List<RelatedPartyEntity> relatedParty = new ArrayList<RelatedPartyEntity>();
-  public TimePeriodEntity validFor;
+  public List<ProductOfferingRef> productOffering = new ArrayList<ProductOfferingRef>();
+  public List<RelatedParty> relatedParty = new ArrayList<RelatedParty>();
+  public TimePeriod validFor;
+  @BsonProperty("baseType")
   public String atBaseType;
+  @BsonProperty("schemaLocation")
   public URI atSchemaLocation;
+  @BsonProperty("type")
   public String atType;
 
 }
