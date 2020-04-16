@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.openapitools.api.PartyPrivacyAgreementApi;
 import org.openapitools.api.PartyPrivacyProfileApi;
 import org.openapitools.model.*;
+import org.openapitools.model.Error;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -45,8 +46,21 @@ public class PartyPrivacyAgreementApiImpl implements PartyPrivacyAgreementApi {
     @Override
     public Response deletePartyPrivacyAgreement(@PathParam("id") String id) {
         PartyPrivacyAgreementEntity entity = PartyPrivacyAgreementEntity.findById(new ObjectId(id));
-        if (entity == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
+        if (entity == null) {
+            Error notFoundError = new Error();
+            notFoundError.setMessage("Cannot find agreement with specified id");
+            notFoundError.setCode(Response.Status.NOT_FOUND.toString());
+            return Response.status(Response.Status.NOT_FOUND).entity(notFoundError).build();
+        }
+
+        //test if specification is used by profile
+        List<PartyPrivacyProfileEntity> profiles = PartyPrivacyProfileEntity.findByPartyPrivacyAgreementId(entity.id.toString());
+        if (profiles != null && profiles.size() > 0) {
+            Error usedError = new Error();
+            usedError.setMessage("Cannot delete agreement, because it is used by a profile");
+            usedError.setCode(Response.Status.BAD_REQUEST.toString());
+            return Response.status(Response.Status.BAD_REQUEST).entity(usedError).build();
+        }
 
         entity.delete();
 
@@ -75,9 +89,13 @@ public class PartyPrivacyAgreementApiImpl implements PartyPrivacyAgreementApi {
     public Response retrievePartyPrivacyAgreement(@PathParam("id") String id, @QueryParam("fields") String fields) {
         PartyPrivacyAgreementEntity entity = PartyPrivacyAgreementEntity.findById(new ObjectId(id));
 
-        if (entity == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
+        if (entity == null) {
+            Error notFoundError = new Error();
+            notFoundError.setMessage("Cannot find agreement with specified id");
+            notFoundError.setCode(Response.Status.NOT_FOUND.toString());
 
+            return Response.status(Response.Status.NOT_FOUND).entity(notFoundError).build();
+        }
         PartyPrivacyAgreement agreement = privacyAgreementMapper.map(entity);
 
 

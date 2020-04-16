@@ -36,7 +36,18 @@ public class PartyPrivacyProfileEntity extends PanacheMongoEntity {
     public URI atSchemaLocation;
     public String atType;
 
-    public static List<PartyPrivacyProfileEntity> findByQuery(MultivaluedMap<String, String> queryMap) {
+    public static List<PartyPrivacyProfileEntity> findByPartyPrivacySpecificationId(String partyPrivacySpecificationId) {
+        PanacheQuery<PartyPrivacyProfileEntity> entities = PartyPrivacyProfileEntity
+                .find("partyPrivacyProfileSpecification._id",partyPrivacySpecificationId);
+        return entities.list();
+    }
+    public static List<PartyPrivacyProfileEntity> findByPartyPrivacyAgreementId(String partyPrivacyAgreementId) {
+        PanacheQuery<PartyPrivacyProfileEntity> entities = PartyPrivacyProfileEntity
+                .find("agreement._id",partyPrivacyAgreementId);
+        return entities.list();
+    }
+
+        public static List<PartyPrivacyProfileEntity> findByQuery(MultivaluedMap<String, String> queryMap) {
 
         Map<String, Object> params = prepareParameters(queryMap);
         // create a query for all living persons

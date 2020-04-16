@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.openapitools.api.PartyPrivacyProfileApi;
 import org.openapitools.api.PartyPrivacyProfileSpecificationApi;
 import org.openapitools.model.*;
+import org.openapitools.model.Error;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
+import java.util.List;
 
 public class PartyPrivacyProfileSpecificationApiImpl implements PartyPrivacyProfileSpecificationApi {
 
@@ -46,8 +48,21 @@ public class PartyPrivacyProfileSpecificationApiImpl implements PartyPrivacyProf
     public Response deletePartyPrivacyProfileSpecification(String id) {
 
         PartyPrivacyProfileSpecificationEntity entity = PartyPrivacyProfileSpecificationEntity.findById(new ObjectId(id));
-        if (entity == null)
+        if (entity == null){
+
+
             return Response.status(Response.Status.NOT_FOUND).build();
+
+        }
+
+        //test if specification is used by profile
+        List<PartyPrivacyProfileEntity> profiles = PartyPrivacyProfileEntity.findByPartyPrivacySpecificationId(entity.id.toString());
+        if (profiles != null && profiles.size() > 0) {
+            Error usedError = new Error();
+            usedError.setMessage("Cannot delete Specification because it is used by a profile");
+            usedError.setCode(Response.Status.BAD_REQUEST.toString());
+            return Response.status(Response.Status.BAD_REQUEST).entity(usedError).build();
+        }
 
         entity.delete();
 
